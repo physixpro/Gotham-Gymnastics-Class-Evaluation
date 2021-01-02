@@ -22,5 +22,12 @@ app.post('/user_info', async (req, res) => {
    res.json('user added successfully')
 })
 
+app.post('/evaluations', async(req,res) => {
+    const athleteResult = req.body
+    const x = await db.collection('evaluations').insertOne(athleteResult)
+    console.log(athleteResult)
+    res.json('evaluated successfully')
+})
+
 const port = process.env.PORT || 3001
 app.listen(port, () => console.log(`database is running on port ${port}...`))
