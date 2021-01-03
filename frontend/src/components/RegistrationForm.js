@@ -7,7 +7,8 @@ const RegistrationForm = () => {
   const [date, setDate] = useState("");
   const [athleteName, setAthleteName] = useState("");
   const [parentName, setParentName] = useState("");
-
+  
+/************* saving the current state of the fields as the user types in the input fields ***********/
   const recordCoachName = (e) => {
     setCoachName(e.target.value);
     console.log(e.target.value);
@@ -25,8 +26,9 @@ const RegistrationForm = () => {
     setParentName(e.target.value);
   };
 
-  const registerUser = async (e) => {
-    e.preventDefault();
+  /**** removed the (e) from the register user because the event now goes to the registerAndMessage function onSubmit */
+  const registerUser = async () => {
+    
     const newUser = {
       coachName: coachName,
       athleteName: athleteName,
@@ -93,7 +95,7 @@ const RegistrationForm = () => {
     setSkillFourNo(e.target.value);
     console.log(e.target.value);
   };
-
+/************* function that evaluates athletes and sends body data to the database via a post route ***********/
   const evaluateAthlete = async (e) => {
     e.preventDefault();
     const athleteResult = {
@@ -106,6 +108,7 @@ const RegistrationForm = () => {
       skillFourYes: skillFourYes,
       skillFourNo: skillFourNo,
     };
+    
     skillLogic();
     const res = await axios.post(
       "http://localhost:3001/evaluations",
@@ -113,6 +116,8 @@ const RegistrationForm = () => {
     );
     console.log(res);
   };
+
+  /*****************  This function does conditional rendering for the radio buttons  ***************/
   const skillLogic = () => {
     if (skillOneYes && skillTwoYes && skillThreeYes && skillFourYes === "Yes") {
       console.log("if statement working");
@@ -120,14 +125,28 @@ const RegistrationForm = () => {
       console.log("the else statement is working fine");
     }
   };
+/*********** Made a new state in order to show the message on submit of the form, the setSubmitted(true) is within the showFormMessage function **********/
+  const[submitted, setSubmitted]=useState(false);
 
+  /********** This function sets the display of the message to true on submit of the form , i also removed the (e) from this function as the event now falls on the registrationAndMessage function */
+  const showFormMessage = () => {
+  
+    setSubmitted(true);
+  };
+
+  /****** When the form submits this function is called, i combined the showFormMessage and registerUser function in order to carry out two actions at once. The (e) is placed on this function as this is the one we call onSubmit of the form */
+  const registrationAndMessage = (e) => {
+    e.preventDefault()
+    showFormMessage();
+    registerUser();
+  }
   return (
     <div>
       <img src={logo} alt="logo" width="100px" />
 
       <h1> Gotham Gymnastics</h1>
       <h2>Skill Assesment</h2>
-      <form onSubmit={registerUser}>
+      <form onSubmit={registrationAndMessage}>
         Coache's Name:
         <input
           type="text"
@@ -153,6 +172,8 @@ const RegistrationForm = () => {
         />
         <button type="submit">Register</button>
       </form>
+      
+     { submitted && <div className='success-message'>Information Submitted Successfully!</div> }
 
       <section>
         <h1> Intermediate</h1>
@@ -161,8 +182,10 @@ const RegistrationForm = () => {
       </section>
 
       {/*************** Radio buttons for Intermediate  ************/}
+
+      <h2>Intermediate</h2>
+
       <form onSubmit={evaluateAthlete}>
-        <h2>Intermediate</h2>
 
         <h3>Front Walkover</h3>
         <input
