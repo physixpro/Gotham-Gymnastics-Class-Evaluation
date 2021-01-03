@@ -106,9 +106,16 @@ const RegistrationForm = () => {
       skillFourYes: skillFourYes,
       skillFourNo: skillFourNo
     };
+    skillLogic()
     const res = await axios.post("http://localhost:3001/evaluations", athleteResult)
     console.log(res)
   }
+const skillLogic = () => {
+  if (skillOneYes && skillTwoYes && skillThreeYes && skillFourYes === "Yes") {
+    console.log("Keagan it works!") 
+  }
+}
+ 
   return (
     <div>
       <img src={logo} alt="logo" width="100px" />
@@ -224,6 +231,7 @@ const RegistrationForm = () => {
         <br />
         <button type="submit">Evaluate</button>
       </form>
+
     </div>
   );
 };
