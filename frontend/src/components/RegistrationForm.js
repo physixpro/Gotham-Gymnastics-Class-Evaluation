@@ -104,18 +104,23 @@ const RegistrationForm = () => {
       skillThreeYes: skillThreeYes,
       skillThreeNo: skillThreeNo,
       skillFourYes: skillFourYes,
-      skillFourNo: skillFourNo
+      skillFourNo: skillFourNo,
     };
-    skillLogic()
-    const res = await axios.post("http://localhost:3001/evaluations", athleteResult)
-    console.log(res)
-  }
-const skillLogic = () => {
-  if (skillOneYes && skillTwoYes && skillThreeYes && skillFourYes === "Yes") {
-    console.log("Keagan it works!") 
-  }
-}
- 
+    skillLogic();
+    const res = await axios.post(
+      "http://localhost:3001/evaluations",
+      athleteResult
+    );
+    console.log(res);
+  };
+  const skillLogic = () => {
+    if (skillOneYes && skillTwoYes && skillThreeYes && skillFourYes === "Yes") {
+      console.log("if statement working");
+    } else {
+      console.log("the else statement is working fine");
+    }
+  };
+
   return (
     <div>
       <img src={logo} alt="logo" width="100px" />
@@ -156,7 +161,7 @@ const skillLogic = () => {
       </section>
 
       {/*************** Radio buttons for Intermediate  ************/}
-      <form onSubmit={evaluateAthlete} >
+      <form onSubmit={evaluateAthlete}>
         <h2>Intermediate</h2>
 
         <h3>Front Walkover</h3>
@@ -231,7 +236,6 @@ const skillLogic = () => {
         <br />
         <button type="submit">Evaluate</button>
       </form>
-
     </div>
   );
 };
