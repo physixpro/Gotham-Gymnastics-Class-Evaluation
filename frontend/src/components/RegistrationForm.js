@@ -35,7 +35,7 @@ const RegistrationForm = () => {
       date: date,
       parentName: parentName,
     };
-    const res = await axios.post("http://localhost:3001/user_info", newUser);
+    const res = await axios.post("http://localhost:3001/evaluations", newUser);
     console.log(res);
   };
   /********************************** RADIO button State code **************************/
@@ -184,6 +184,163 @@ const RegistrationForm = () => {
       {/*************** Radio buttons for Intermediate  ************/}
 
       <h2>Intermediate</h2>
+
+      <form onSubmit={evaluateAthlete}>
+
+        <h3>Front Walkover</h3>
+        <input
+          type="radio"
+          name="skill-one"
+          id="skill-one-yes"
+          value="Yes"
+          onChange={recordSkillOneYes}
+        />
+        <label>Yes</label>
+        <input
+          type="radio"
+          name="skill-one"
+          id="skill-one-no"
+          value="No"
+          onChange={recordSkillOneNo}
+        />
+        <label>No</label>
+        <h3>Back Walkover</h3>
+        <input
+          type="radio"
+          name="skill-two"
+          id="skill-two-yes"
+          value="Yes"
+          onChange={recordSkillTwoYes}
+        />
+        <label>Yes</label>
+        <input
+          type="radio"
+          name="skill-two"
+          id="skill-two-no"
+          value="No"
+          onChange={recordSkillTwoNo}
+        />
+        <label>No</label>
+        <h3>Hand-Stand Forward-Roll</h3>
+        <input
+          type="radio"
+          name="skill-three"
+          id="skill-three-yes"
+          value="Yes"
+          onChange={recordSkillThreeYes}
+        />
+        <label>Yes</label>
+        <input
+          type="radio"
+          name="skill-three"
+          id="skill-three-no"
+          value="No"
+          onChange={recordSkillThreeNo}
+        />
+        <label>No</label>
+        <h3>Round-Off</h3>
+        <input
+          type="radio"
+          name="skill-four"
+          id="skill-four-yes"
+          value="Yes"
+          onChange={recordSkillFourYes}
+        />
+        <label>Yes</label>
+        <input
+          type="radio"
+          name="skill-four"
+          id="skill-four-no"
+          value="No"
+          onChange={recordSkillFourNo}
+        />
+        <label>No</label>
+        <br />
+        <br />
+        <button type="submit">Evaluate</button>
+      </form>
+      {/*************** Radio buttons for Advanced  ************/}
+
+      <h2>Advanced</h2>
+
+      <form onSubmit={evaluateAthlete}>
+
+        <h3>Front Walkover</h3>
+        <input
+          type="radio"
+          name="skill-one"
+          id="skill-one-yes"
+          value="Yes"
+          onChange={recordSkillOneYes}
+        />
+        <label>Yes</label>
+        <input
+          type="radio"
+          name="skill-one"
+          id="skill-one-no"
+          value="No"
+          onChange={recordSkillOneNo}
+        />
+        <label>No</label>
+        <h3>Back Walkover</h3>
+        <input
+          type="radio"
+          name="skill-two"
+          id="skill-two-yes"
+          value="Yes"
+          onChange={recordSkillTwoYes}
+        />
+        <label>Yes</label>
+        <input
+          type="radio"
+          name="skill-two"
+          id="skill-two-no"
+          value="No"
+          onChange={recordSkillTwoNo}
+        />
+        <label>No</label>
+        <h3>Hand-Stand Forward-Roll</h3>
+        <input
+          type="radio"
+          name="skill-three"
+          id="skill-three-yes"
+          value="Yes"
+          onChange={recordSkillThreeYes}
+        />
+        <label>Yes</label>
+        <input
+          type="radio"
+          name="skill-three"
+          id="skill-three-no"
+          value="No"
+          onChange={recordSkillThreeNo}
+        />
+        <label>No</label>
+        <h3>Round-Off</h3>
+        <input
+          type="radio"
+          name="skill-four"
+          id="skill-four-yes"
+          value="Yes"
+          onChange={recordSkillFourYes}
+        />
+        <label>Yes</label>
+        <input
+          type="radio"
+          name="skill-four"
+          id="skill-four-no"
+          value="No"
+          onChange={recordSkillFourNo}
+        />
+        <label>No</label>
+        <br />
+        <br />
+        <button type="submit">Evaluate</button>
+      </form>
+
+      {/*************** Radio buttons for IGC  ************/}
+
+      <h2>IGC</h2>
 
       <form onSubmit={evaluateAthlete}>
 
