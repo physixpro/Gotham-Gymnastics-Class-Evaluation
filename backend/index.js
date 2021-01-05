@@ -15,6 +15,11 @@ db.once('open', function callback () {
     console.log('database is up and running')
 })
 
+app.get('/evaluations', async (req,res) => {
+    const evaluations = await db.collection('evaluations').find({}).toArray()
+    res.json(evaluations)
+})
+
 app.post('/user_info', async (req, res) => {
    const form = req.body
    const x = await db.collection('user_info').insertOne(form)

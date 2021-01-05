@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import logo from "../images/logo.jpg";
 
+
+// ** CTRL + p opens a filefinder 
 const RegistrationForm = () => {
   const [coachName, setCoachName] = useState("");
   const [date, setDate] = useState("");
@@ -11,6 +13,7 @@ const RegistrationForm = () => {
 /************* saving the current state of the fields as the user types in the input fields ***********/
   const recordCoachName = (e) => {
     setCoachName(e.target.value);
+   
     console.log(e.target.value);
   };
 
@@ -27,17 +30,7 @@ const RegistrationForm = () => {
   };
 
   /**** removed the (e) from the register user because the event now goes to the registerAndMessage function onSubmit */
-  const registerUser = async () => {
-    
-    const newUser = {
-      coachName: coachName,
-      athleteName: athleteName,
-      date: date,
-      parentName: parentName,
-    };
-    const res = await axios.post("http://localhost:3001/evaluations", newUser);
-    console.log(res);
-  };
+ 
   /********************************** RADIO button State code **************************/
   const [skillOneYes, setSkillOneYes] = useState("");
   const [skillOneNo, setSkillOneNo] = useState("");
@@ -129,16 +122,24 @@ const RegistrationForm = () => {
   const[submitted, setSubmitted]=useState(false);
 
   /********** This function sets the display of the message to true on submit of the form , i also removed the (e) from this function as the event now falls on the registrationAndMessage function */
-  const showFormMessage = () => {
   
-    setSubmitted(true);
-  };
 
   /****** When the form submits this function is called, i combined the showFormMessage and registerUser function in order to carry out two actions at once. The (e) is placed on this function as this is the one we call onSubmit of the form */
-  const registrationAndMessage = (e) => {
+  const registrationAndMessage = async (e) => {
     e.preventDefault()
-    showFormMessage();
-    registerUser();
+    setSubmitted(true);
+    const newUser = {
+      coachName: coachName,
+      athleteName: athleteName,
+      date: date,
+      parentName: parentName,
+    };
+    const res = await axios.post("http://localhost:3001/evaluations", newUser);
+    console.log(res);
+    setCoachName("")
+    setAthleteName("")
+    setDate("")
+    setParentName("")
   }
   return (
     <div>
@@ -153,15 +154,17 @@ const RegistrationForm = () => {
           name="coach name"
           placeholder="Enter Name"
           onChange={recordCoachName}
+          value={coachName}
         />
         Date:
-        <input type="date" name="date" onChange={recordDate} />
+        <input type="date" name="date" onChange={recordDate} value={date}/>
         Athlete Name:
         <input
           type="text"
           name=" athlete name"
           placeholder="Athlete Name"
           onChange={recordAthleteName}
+          value={athleteName}
         />
         Parent/Guardian Name:
         <input
@@ -169,11 +172,12 @@ const RegistrationForm = () => {
           name=" parent name"
           placeholder="Parent Name"
           onChange={recordParentName}
+          value={parentName}
         />
         <button type="submit">Register</button>
       </form>
-      
-     { submitted && <div className='success-message'>Information Submitted Successfully!</div> }
+      {/* short circuit evaluation; is submitted true? if so run the code to the right of the && */} 
+     { submitted ? <div className='success-message'>Information Submitted Successfully!</div> : null }
 
       <section>
         <h1> Intermediate</h1>
@@ -421,3 +425,4 @@ const RegistrationForm = () => {
 };
 
 export default RegistrationForm;
+
