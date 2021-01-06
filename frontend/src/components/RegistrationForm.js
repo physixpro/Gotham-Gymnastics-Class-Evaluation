@@ -91,6 +91,7 @@ const RegistrationForm = () => {
 /************* function that evaluates athletes and sends body data to the database via a post route ***********/
   const evaluateAthlete = async (e) => {
     e.preventDefault();
+    setHideForm(true)
     const athleteResult = {
       skillOneYes: skillOneYes,
       skillOneNo: skillOneNo,
@@ -141,6 +142,9 @@ const RegistrationForm = () => {
     setDate("")
     setParentName("")
   }
+
+  const[hideForm,setHideForm]=useState(false)
+  
   return (
     <div>
       <img src={logo} alt="logo" width="100px" />
@@ -184,11 +188,13 @@ const RegistrationForm = () => {
         <h1> Advanced</h1>
         <h1> IGC </h1>
       </section>
+      
 
       {/*************** Radio buttons for Intermediate  ************/}
 
-      <h2>Intermediate</h2>
 
+      <h2>Intermediate</h2>
+{hideForm ? null :
       <form onSubmit={evaluateAthlete}>
 
         <h3>Front Walkover</h3>
@@ -262,7 +268,8 @@ const RegistrationForm = () => {
         <br />
         <br />
         <button type="submit">Evaluate</button>
-      </form>
+      </form>  
+}
       {/*************** Radio buttons for Advanced  ************/}
 
       <h2>Advanced</h2>
