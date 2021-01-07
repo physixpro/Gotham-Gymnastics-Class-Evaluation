@@ -12,7 +12,7 @@ const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'connection error'))
 db.once('open', function callback () {
-    console.log('database is up and running')
+    console.log('Database is up and running')
 })
 
 app.get('/evaluations', async (req,res) => {
@@ -35,4 +35,4 @@ app.post('/evaluations', async(req,res) => {
 })
 
 const port = process.env.PORT || 3001
-app.listen(port, () => console.log(`database is running on port ${port}...`))
+app.listen(port, () => console.log(`Server is running on port ${port}...`))

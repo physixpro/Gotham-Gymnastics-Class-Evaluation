@@ -3,12 +3,18 @@ import axios from "axios";
 import logo from "../images/logo.jpg";
 
 
-// ** CTRL + p opens a filefinder 
+// ** CTRL + p opens the filefinder 
 const RegistrationForm = () => {
+
+// to be reviewed, nothing happens with this state on button click so far
+const[intermediate,setIntermediate]=useState("intermediate")
+
+
   const [coachName, setCoachName] = useState("");
   const [date, setDate] = useState("");
   const [athleteName, setAthleteName] = useState("");
   const [parentName, setParentName] = useState("");
+  
   
 /************* saving the current state of the fields as the user types in the input fields ***********/
   const recordCoachName = (e) => {
@@ -110,13 +116,12 @@ const RegistrationForm = () => {
     );
     console.log(res);
   };
+  
 
   /*****************  This function does conditional rendering for the radio buttons  ***************/
   const skillLogic = () => {
     if (skillOneYes && skillTwoYes && skillThreeYes && skillFourYes === "Yes") {
-      console.log("if statement working");
-    } else {
-      console.log("the else statement is working fine");
+   setIntermediate(intermediate)
     }
   };
 /*********** Made a new state in order to show the message on submit of the form, the setSubmitted(true) is within the showFormMessage function **********/
@@ -268,8 +273,10 @@ const RegistrationForm = () => {
         <br />
         <br />
         <button type="submit">Evaluate</button>
-      </form>  
+      </form>    
 }
+{hideForm && skillLogic}
+
       {/*************** Radio buttons for Advanced  ************/}
 
       <h2>Advanced</h2>
