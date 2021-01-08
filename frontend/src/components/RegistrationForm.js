@@ -286,8 +286,10 @@ const beginnerSkillLogic = () => {
         <button type="submit">Evaluate</button>
       </form>    
 }
+
+{/* onSubmit see if intLogic or begLogic is true and render the coresponding message */}
 {intLogic ? <div>Congratulations, athlete qualifies for Intermediate level classes!</div> : begLogic && <div>Congratulations, athlete qualifies for Beginner level classes!</div> }
-{/* {begLogic && <div>Congratulations, athlete qualifies for Beginner level classes!</div> } */}
+
 
       {/*************** Radio buttons for Advanced  ************/}
 
