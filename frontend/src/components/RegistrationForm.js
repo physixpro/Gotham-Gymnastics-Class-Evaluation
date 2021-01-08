@@ -6,8 +6,18 @@ import logo from "../images/logo.jpg";
 // ** CTRL + p opens the filefinder 
 const RegistrationForm = () => {
 
-// to be reviewed, nothing happens with this state on button click so far
-const[intermediate,setIntermediate]=useState("intermediate")
+// this state sets the intermediate message onSubmit
+const[intLogic,setIntLogic]=useState(false)
+
+// this state sets the beginner message onSubmit
+const[begLogic,setBegLogic]=useState(false)
+
+const beginnerSkillLogic = () => {
+  if (skillOneYes || skillTwoYes || skillThreeYes || skillFourYes !== "Yes" ){
+    setBegLogic(true)
+  }
+}
+
 
 
   const [coachName, setCoachName] = useState("");
@@ -109,7 +119,8 @@ const[intermediate,setIntermediate]=useState("intermediate")
       skillFourNo: skillFourNo,
     };
     
-    skillLogic();
+    intermediateSkillLogic();
+    beginnerSkillLogic();
     const res = await axios.post(
       "http://localhost:3001/evaluations",
       athleteResult
@@ -119,9 +130,9 @@ const[intermediate,setIntermediate]=useState("intermediate")
   
 
   /*****************  This function does conditional rendering for the radio buttons  ***************/
-  const skillLogic = () => {
+  const intermediateSkillLogic = () => {
     if (skillOneYes && skillTwoYes && skillThreeYes && skillFourYes === "Yes") {
-   setIntermediate(intermediate)
+   setIntLogic(true)
     }
   };
 /*********** Made a new state in order to show the message on submit of the form, the setSubmitted(true) is within the showFormMessage function **********/
@@ -275,7 +286,8 @@ const[intermediate,setIntermediate]=useState("intermediate")
         <button type="submit">Evaluate</button>
       </form>    
 }
-{hideForm && skillLogic}
+{intLogic ? <div>Congratulations, athlete qualifies for Intermediate level classes!</div> : begLogic && <div>Congratulations, athlete qualifies for Beginner level classes!</div> }
+{/* {begLogic && <div>Congratulations, athlete qualifies for Beginner level classes!</div> } */}
 
       {/*************** Radio buttons for Advanced  ************/}
 
