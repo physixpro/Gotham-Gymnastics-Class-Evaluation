@@ -12,11 +12,58 @@ const[intLogic,setIntLogic]=useState(false)
 // this state sets the beginner message onSubmit
 const[begLogic,setBegLogic]=useState(false)
 
+// sets state to advance message onSubmit
+const[advancedLogic,setAdvancedLogic]=useState(false)
+
+// sets state to show intermediate message for advance form
+const[advancedLogicTwo,setAdvancedLogicTwo]=useState(false)
+
+
+// sets state to show IGC message onSubmit
+const[igcLogic,setIgcLogic]=useState(false)
+
+// sets state to show advance message for igc form
+const[igcLogicTwo,setIgcLogicTwo]=useState(false)
+
+const igcSkillLogicOne = () => {
+  if(skillOneYes && skillTwoYes && skillThreeYes && skillFourYes === "Yes"){
+    setIgcLogic(true)
+  }
+}
+
+const igcSkillLogicTwo = () => {
+  if(skillOneYes || skillTwoYes || skillThreeYes || skillFourYes !== "Yes"){
+    setIgcLogicTwo(true)
+  }
+}
+
+
+
+const advancedSkillLogicOne = () => {
+  if(skillOneYes && skillTwoYes && skillThreeYes && skillFourYes === "Yes"){
+    setAdvancedLogic(true)
+  }
+}
+
+const advancedSkillLogicTwo = () => {
+  if(skillOneYes || skillTwoYes || skillThreeYes || skillFourYes !== "Yes" ){
+    setAdvancedLogicTwo(true)
+  }
+}
+
+
+
 const beginnerSkillLogic = () => {
   if (skillOneYes || skillTwoYes || skillThreeYes || skillFourYes !== "Yes" ){
     setBegLogic(true)
   }
 }
+ /*****************  This function does conditional rendering for the radio buttons  ***************/
+ const intermediateSkillLogic = () => {
+  if (skillOneYes && skillTwoYes && skillThreeYes && skillFourYes === "Yes") {
+ setIntLogic(true)
+  }
+};
 
 
 
@@ -105,7 +152,7 @@ const beginnerSkillLogic = () => {
     console.log(e.target.value);
   };
 /************* function that evaluates athletes and sends body data to the database via a post route ***********/
-  const evaluateAthlete = async (e) => {
+  const evaluateAthleteIntermediate = async (e) => {
     e.preventDefault();
     setHideForm(true)
     const athleteResult = {
@@ -127,14 +174,49 @@ const beginnerSkillLogic = () => {
     );
     console.log(res);
   };
-  
 
-  /*****************  This function does conditional rendering for the radio buttons  ***************/
-  const intermediateSkillLogic = () => {
-    if (skillOneYes && skillTwoYes && skillThreeYes && skillFourYes === "Yes") {
-   setIntLogic(true)
-    }
+  const evaluateAthleteAdvanced = async (e) => {
+    e.preventDefault();
+    setHideAdvanceForm(true)
+    const athleteResult= {
+      skillOneYes: skillOneYes,
+      skillOneNo: skillOneNo,
+      skillTwoYes: skillTwoYes,
+      skillTwoNo: skillTwoNo,
+      skillThreeYes: skillThreeYes,
+      skillThreeNo: skillThreeNo,
+      skillFourYes: skillFourYes,
+      skillFourNo: skillFourNo,
+    };
+    advancedSkillLogicOne();
+    advancedSkillLogicTwo();
+    const res = await axios.post(
+      "http://localhost:3001/evaluations", athleteResult
+    );
+    console.log(res)
+  }
+  
+const evaluateAthleteIgc = async (e) => {
+  e.preventDefault()
+  setHideIgcForm(true)
+  const athleteResult= {
+    skillOneYes: skillOneYes,
+      skillOneNo: skillOneNo,
+      skillTwoYes: skillTwoYes,
+      skillTwoNo: skillTwoNo,
+      skillThreeYes: skillThreeYes,
+      skillThreeNo: skillThreeNo,
+      skillFourYes: skillFourYes,
+      skillFourNo: skillFourNo,
   };
+  igcSkillLogicOne();
+  igcSkillLogicTwo();
+    const res = await axios.post(
+      "http://localhost:3001/evaluations", athleteResult
+    );
+    console.log(res)
+}
+ 
 /*********** Made a new state in order to show the message on submit of the form, the setSubmitted(true) is within the showFormMessage function **********/
   const[submitted, setSubmitted]=useState(false);
 
@@ -160,6 +242,10 @@ const beginnerSkillLogic = () => {
   }
 
   const[hideForm,setHideForm]=useState(false)
+
+  const[hideAdvanceForm,setHideAdvanceForm]=useState(false)
+
+  const[hideIgcForm,setHideIgcForm]=useState(false)
   
   return (
     <div>
@@ -211,7 +297,7 @@ const beginnerSkillLogic = () => {
 
       <h2>Intermediate</h2>
 {hideForm ? null :
-      <form onSubmit={evaluateAthlete}>
+      <form onSubmit={evaluateAthleteIntermediate}>
 
         <h3>Front Walkover</h3>
         <input
@@ -294,8 +380,8 @@ const beginnerSkillLogic = () => {
       {/*************** Radio buttons for Advanced  ************/}
 
       <h2>Advanced</h2>
-
-      <form onSubmit={evaluateAthlete}>
+{hideAdvanceForm ? null :
+      <form onSubmit={evaluateAthleteAdvanced}>
 
         <h3>Front Walkover</h3>
         <input
@@ -369,12 +455,14 @@ const beginnerSkillLogic = () => {
         <br />
         <button type="submit">Evaluate</button>
       </form>
+}
+{advancedLogic ? <div>Congratulations, athlete qualifies for Advanced level classes!</div> : advancedLogicTwo && <div>Congratulations, athlete qualifies for Intermediate level classes!</div>}
 
       {/*************** Radio buttons for IGC  ************/}
 
       <h2>IGC</h2>
-
-      <form onSubmit={evaluateAthlete}>
+{hideIgcForm ? null :
+      <form onSubmit={evaluateAthleteIgc}>
 
         <h3>Front Walkover</h3>
         <input
@@ -448,6 +536,8 @@ const beginnerSkillLogic = () => {
         <br />
         <button type="submit">Evaluate</button>
       </form>
+      }
+      {igcLogic ? <div>Congratulations, athlete qualifies for the IGC team!</div> : igcLogicTwo && <div>Congratulations, athlete qualifies for Advanced; level classes!</div>}
     </div>
   );
 };
