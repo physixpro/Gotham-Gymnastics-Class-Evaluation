@@ -1,5 +1,7 @@
 Ctrl + P is my filefinder shortcut
 
+Ctrl + G shows the "go to line" e.g. type line here
+
 Ctrl + A is select all
 
 The golden rule of react - NEVER change state directly; e.g. coachName = e.target.value , instead use the setFunction e.g. setCoachName(e.target.value)
@@ -12,3 +14,6 @@ Research Arrays; array methods.
 Find method, (google 'array.find js') <-----------------
 map method
 filter method
+
+
+Homework - if we want to extract our different forms into their own files then we need to learn about props(props are how we share information from one component to another.)

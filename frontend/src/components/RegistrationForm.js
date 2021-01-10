@@ -2,81 +2,42 @@ import React, { useState } from "react";
 import axios from "axios";
 import logo from "../images/logo.jpg";
 
-
-// ** CTRL + p opens the filefinder 
+// ** CTRL + p opens the filefinder
 const RegistrationForm = () => {
+  const [level, setLevel] = useState("IGC");
 
-// this state sets the intermediate message onSubmit
-const[intLogic,setIntLogic]=useState(false)
+  const [message, setMessage] = useState("");
+  // sets state to advance message onSubmit
 
-// this state sets the beginner message onSubmit
-const[begLogic,setBegLogic]=useState(false)
+  const [advMessage, setAdvMessage] = useState("");
 
-// sets state to advance message onSubmit
-const[advancedLogic,setAdvancedLogic]=useState(false)
+  // sets state to show IGC message onSubmit
+  const [igcLogic, setIgcLogic] = useState(false);
 
-// sets state to show intermediate message for advance form
-const[advancedLogicTwo,setAdvancedLogicTwo]=useState(false)
+  // sets state to show advance message for igc form
+  const [igcLogicTwo, setIgcLogicTwo] = useState(false);
 
+  const igcSkillLogicOne = () => {
+    if (skillOneYes && skillTwoYes && skillThreeYes && skillFourYes === "Yes") {
+      setIgcLogic(true);
+    }
+  };
 
-// sets state to show IGC message onSubmit
-const[igcLogic,setIgcLogic]=useState(false)
-
-// sets state to show advance message for igc form
-const[igcLogicTwo,setIgcLogicTwo]=useState(false)
-
-const igcSkillLogicOne = () => {
-  if(skillOneYes && skillTwoYes && skillThreeYes && skillFourYes === "Yes"){
-    setIgcLogic(true)
-  }
-}
-
-const igcSkillLogicTwo = () => {
-  if(skillOneYes || skillTwoYes || skillThreeYes || skillFourYes !== "Yes"){
-    setIgcLogicTwo(true)
-  }
-}
-
-
-
-const advancedSkillLogicOne = () => {
-  if(skillOneYes && skillTwoYes && skillThreeYes && skillFourYes === "Yes"){
-    setAdvancedLogic(true)
-  }
-}
-
-const advancedSkillLogicTwo = () => {
-  if(skillOneYes || skillTwoYes || skillThreeYes || skillFourYes !== "Yes" ){
-    setAdvancedLogicTwo(true)
-  }
-}
-
-
-
-const beginnerSkillLogic = () => {
-  if (skillOneYes || skillTwoYes || skillThreeYes || skillFourYes !== "Yes" ){
-    setBegLogic(true)
-  }
-}
- /*****************  This function does conditional rendering for the radio buttons  ***************/
- const intermediateSkillLogic = () => {
-  if (skillOneYes && skillTwoYes && skillThreeYes && skillFourYes === "Yes") {
- setIntLogic(true)
-  }
-};
-
-
+  const igcSkillLogicTwo = () => {
+    if (skillOneYes || skillTwoYes || skillThreeYes || skillFourYes !== "Yes") {
+      setIgcLogicTwo(true);
+    }
+  };
 
   const [coachName, setCoachName] = useState("");
   const [date, setDate] = useState("");
   const [athleteName, setAthleteName] = useState("");
   const [parentName, setParentName] = useState("");
-  
-  
-/************* saving the current state of the fields as the user types in the input fields ***********/
+
+  /************* saving the current state of the fields as the user types in the input fields ***********/
   const recordCoachName = (e) => {
     setCoachName(e.target.value);
-   
+
     console.log(e.target.value);
   };
 
@@ -93,7 +54,7 @@ const beginnerSkillLogic = () => {
   };
 
   /**** removed the (e) from the register user because the event now goes to the registerAndMessage function onSubmit */
- 
+
   /********************************** RADIO button State code **************************/
   const [skillOneYes, setSkillOneYes] = useState("");
   const [skillOneNo, setSkillOneNo] = useState("");
@@ -151,10 +112,10 @@ const beginnerSkillLogic = () => {
     setSkillFourNo(e.target.value);
     console.log(e.target.value);
   };
-/************* function that evaluates athletes and sends body data to the database via a post route ***********/
+  /************* function that evaluates athletes and sends body data to the database via a post route ***********/
   const evaluateAthleteIntermediate = async (e) => {
     e.preventDefault();
-    setHideForm(true)
+
     const athleteResult = {
       skillOneYes: skillOneYes,
       skillOneNo: skillOneNo,
@@ -165,9 +126,22 @@ const beginnerSkillLogic = () => {
       skillFourYes: skillFourYes,
       skillFourNo: skillFourNo,
     };
-    
-    intermediateSkillLogic();
-    beginnerSkillLogic();
+
+    if (
+      skillOneYes === "Yes" &&
+      skillTwoYes === "Yes" &&
+      skillThreeYes === "Yes" &&
+      skillFourYes === "Yes"
+    ) {
+      setMessage(
+        "Congratulations, athlete qualifies for Intermediate level classes!"
+      );
+    } else {
+      setMessage(
+        "Congratulations, athlete qualifies for Beginner level classes!"
+      );
+    }
+
     const res = await axios.post(
       "http://localhost:3001/evaluations",
       athleteResult
@@ -177,8 +151,8 @@ const beginnerSkillLogic = () => {
 
   const evaluateAthleteAdvanced = async (e) => {
     e.preventDefault();
-    setHideAdvanceForm(true)
-    const athleteResult= {
+
+    const athleteResult = {
       skillOneYes: skillOneYes,
       skillOneNo: skillOneNo,
       skillTwoYes: skillTwoYes,
@@ -188,19 +162,33 @@ const beginnerSkillLogic = () => {
       skillFourYes: skillFourYes,
       skillFourNo: skillFourNo,
     };
-    advancedSkillLogicOne();
-    advancedSkillLogicTwo();
+    if (
+      skillOneYes === "Yes" &&
+      skillTwoYes === "Yes" &&
+      skillThreeYes === "Yes" &&
+      skillFourYes === "Yes"
+    ) {
+      setAdvMessage(
+        " Congratulations, athlete qualifies for Advanced level classes!"
+      );
+    } else {
+      setAdvMessage(
+        "Congratulations, athlete qualifies for Intermediate level classes!"
+      );
+    }
+
     const res = await axios.post(
-      "http://localhost:3001/evaluations", athleteResult
+      "http://localhost:3001/evaluations",
+      athleteResult
     );
-    console.log(res)
-  }
-  
-const evaluateAthleteIgc = async (e) => {
-  e.preventDefault()
-  setHideIgcForm(true)
-  const athleteResult= {
-    skillOneYes: skillOneYes,
+    console.log(res);
+  };
+
+  const evaluateAthleteIgc = async (e) => {
+    e.preventDefault();
+
+    const athleteResult = {
+      skillOneYes: skillOneYes,
       skillOneNo: skillOneNo,
       skillTwoYes: skillTwoYes,
       skillTwoNo: skillTwoNo,
@@ -208,49 +196,78 @@ const evaluateAthleteIgc = async (e) => {
       skillThreeNo: skillThreeNo,
       skillFourYes: skillFourYes,
       skillFourNo: skillFourNo,
-  };
-  igcSkillLogicOne();
-  igcSkillLogicTwo();
+    };
+    if (
+      skillOneYes === "Yes" &&
+      skillTwoYes === "Yes" &&
+      skillThreeYes === "Yes" &&
+      skillFourYes === "Yes"
+    ) {
+    }
     const res = await axios.post(
-      "http://localhost:3001/evaluations", athleteResult
+      "http://localhost:3001/evaluations",
+      athleteResult
     );
-    console.log(res)
-}
- 
-/*********** Made a new state in order to show the message on submit of the form, the setSubmitted(true) is within the showFormMessage function **********/
-  const[submitted, setSubmitted]=useState(false);
+    console.log(res);
+  };
+
+  /*********** Made a new state in order to show the message on submit of the form, the setSubmitted(true) is within the showFormMessage function **********/
 
   /********** This function sets the display of the message to true on submit of the form , i also removed the (e) from this function as the event now falls on the registrationAndMessage function */
-  
 
   /****** When the form submits this function is called, i combined the showFormMessage and registerUser function in order to carry out two actions at once. The (e) is placed on this function as this is the one we call onSubmit of the form */
   const registrationAndMessage = async (e) => {
-    e.preventDefault()
-    setSubmitted(true);
-    const newUser = {
-      coachName: coachName,
-      athleteName: athleteName,
-      date: date,
-      parentName: parentName,
-    };
-    const res = await axios.post("http://localhost:3001/evaluations", newUser);
-    console.log(res);
-    setCoachName("")
-    setAthleteName("")
-    setDate("")
-    setParentName("")
-  }
+    e.preventDefault();
+    // setSubmitted(true);
 
-  const[hideForm,setHideForm]=useState(false)
+    if (
+      skillOneYes === "Yes" &&
+      skillTwoYes === "Yes" &&
+      skillThreeYes === "Yes" &&
+      skillFourYes === "Yes"
+    ) {
+      setMessage(`User is registered and there level is ${level}`);
+      // If they are IGC, save this information in the database
+      const newUser = {
+        coachName: coachName,
+        athleteName: athleteName,
+        date: date,
+        parentName: parentName,
+        level: level,
+      };
+      const res = await axios.post(
+        "http://localhost:3001/evaluations",
+        newUser
+      );
+      console.log(res);
+      setCoachName("");
+      setAthleteName("");
+      setDate("");
+      setParentName("");
+    } else if (level === "IGC") {
+      setLevel("Advanced");
+    } else if (level === "Advanced") {
+      setLevel("Intermediate");
+    } else {
+      setLevel("Beginner");
+      setMessage(`User is registered and there level is ${level}`);
+      const newUser = {
+        coachName: coachName,
+        athleteName: athleteName,
+        date: date,
+        parentName: parentName,
+        level: "Beginner",
+      };
+      const res = await axios.post(
+        "http://localhost:3001/evaluations",
+        newUser
+      );
+    }
+  };
 
-  const[hideAdvanceForm,setHideAdvanceForm]=useState(false)
-
-  const[hideIgcForm,setHideIgcForm]=useState(false)
-  
   return (
     <div>
       <img src={logo} alt="logo" width="100px" />
-
       <h1> Gotham Gymnastics</h1>
       <h2>Skill Assesment</h2>
       <form onSubmit={registrationAndMessage}>
@@ -263,7 +280,7 @@ const evaluateAthleteIgc = async (e) => {
           value={coachName}
         />
         Date:
-        <input type="date" name="date" onChange={recordDate} value={date}/>
+        <input type="date" name="date" onChange={recordDate} value={date} />
         Athlete Name:
         <input
           type="text"
@@ -280,267 +297,235 @@ const evaluateAthleteIgc = async (e) => {
           onChange={recordParentName}
           value={parentName}
         />
-        <button type="submit">Register</button>
-      </form>
-      {/* short circuit evaluation; is submitted true? if so run the code to the right of the && */} 
-     { submitted ? <div className='success-message'>Information Submitted Successfully!</div> : null }
-
-      <section>
-        <h1> Intermediate</h1>
-        <h1> Advanced</h1>
-        <h1> IGC </h1>
-      </section>
-      
-
-      {/*************** Radio buttons for Intermediate  ************/}
-
-
-      <h2>Intermediate</h2>
-{hideForm ? null :
-      <form onSubmit={evaluateAthleteIntermediate}>
-
-        <h3>Front Walkover</h3>
-        <input
-          type="radio"
-          name="skill-one"
-          id="skill-one-yes"
-          value="Yes"
-          onChange={recordSkillOneYes}
-        />
-        <label>Yes</label>
-        <input
-          type="radio"
-          name="skill-one"
-          id="skill-one-no"
-          value="No"
-          onChange={recordSkillOneNo}
-        />
-        <label>No</label>
-        <h3>Back Walkover</h3>
-        <input
-          type="radio"
-          name="skill-two"
-          id="skill-two-yes"
-          value="Yes"
-          onChange={recordSkillTwoYes}
-        />
-        <label>Yes</label>
-        <input
-          type="radio"
-          name="skill-two"
-          id="skill-two-no"
-          value="No"
-          onChange={recordSkillTwoNo}
-        />
-        <label>No</label>
-        <h3>Hand-Stand Forward-Roll</h3>
-        <input
-          type="radio"
-          name="skill-three"
-          id="skill-three-yes"
-          value="Yes"
-          onChange={recordSkillThreeYes}
-        />
-        <label>Yes</label>
-        <input
-          type="radio"
-          name="skill-three"
-          id="skill-three-no"
-          value="No"
-          onChange={recordSkillThreeNo}
-        />
-        <label>No</label>
-        <h3>Round-Off</h3>
-        <input
-          type="radio"
-          name="skill-four"
-          id="skill-four-yes"
-          value="Yes"
-          onChange={recordSkillFourYes}
-        />
-        <label>Yes</label>
-        <input
-          type="radio"
-          name="skill-four"
-          id="skill-four-no"
-          value="No"
-          onChange={recordSkillFourNo}
-        />
-        <label>No</label>
-        <br />
-        <br />
-        <button type="submit">Evaluate</button>
-      </form>    
-}
-
-{/* onSubmit see if intLogic or begLogic is true and render the coresponding message */}
-{intLogic ? <div>Congratulations, athlete qualifies for Intermediate level classes!</div> : begLogic && <div>Congratulations, athlete qualifies for Beginner level classes!</div> }
-
-
-      {/*************** Radio buttons for Advanced  ************/}
-
-      <h2>Advanced</h2>
-{hideAdvanceForm ? null :
-      <form onSubmit={evaluateAthleteAdvanced}>
-
-        <h3>Front Walkover</h3>
-        <input
-          type="radio"
-          name="skill-one"
-          id="skill-one-yes"
-          value="Yes"
-          onChange={recordSkillOneYes}
-        />
-        <label>Yes</label>
-        <input
-          type="radio"
-          name="skill-one"
-          id="skill-one-no"
-          value="No"
-          onChange={recordSkillOneNo}
-        />
-        <label>No</label>
-        <h3>Back Walkover</h3>
-        <input
-          type="radio"
-          name="skill-two"
-          id="skill-two-yes"
-          value="Yes"
-          onChange={recordSkillTwoYes}
-        />
-        <label>Yes</label>
-        <input
-          type="radio"
-          name="skill-two"
-          id="skill-two-no"
-          value="No"
-          onChange={recordSkillTwoNo}
-        />
-        <label>No</label>
-        <h3>Hand-Stand Forward-Roll</h3>
-        <input
-          type="radio"
-          name="skill-three"
-          id="skill-three-yes"
-          value="Yes"
-          onChange={recordSkillThreeYes}
-        />
-        <label>Yes</label>
-        <input
-          type="radio"
-          name="skill-three"
-          id="skill-three-no"
-          value="No"
-          onChange={recordSkillThreeNo}
-        />
-        <label>No</label>
-        <h3>Round-Off</h3>
-        <input
-          type="radio"
-          name="skill-four"
-          id="skill-four-yes"
-          value="Yes"
-          onChange={recordSkillFourYes}
-        />
-        <label>Yes</label>
-        <input
-          type="radio"
-          name="skill-four"
-          id="skill-four-no"
-          value="No"
-          onChange={recordSkillFourNo}
-        />
-        <label>No</label>
-        <br />
-        <br />
-        <button type="submit">Evaluate</button>
-      </form>
-}
-{advancedLogic ? <div>Congratulations, athlete qualifies for Advanced level classes!</div> : advancedLogicTwo && <div>Congratulations, athlete qualifies for Intermediate level classes!</div>}
-
-      {/*************** Radio buttons for IGC  ************/}
-
-      <h2>IGC</h2>
-{hideIgcForm ? null :
-      <form onSubmit={evaluateAthleteIgc}>
-
-        <h3>Front Walkover</h3>
-        <input
-          type="radio"
-          name="skill-one"
-          id="skill-one-yes"
-          value="Yes"
-          onChange={recordSkillOneYes}
-        />
-        <label>Yes</label>
-        <input
-          type="radio"
-          name="skill-one"
-          id="skill-one-no"
-          value="No"
-          onChange={recordSkillOneNo}
-        />
-        <label>No</label>
-        <h3>Back Walkover</h3>
-        <input
-          type="radio"
-          name="skill-two"
-          id="skill-two-yes"
-          value="Yes"
-          onChange={recordSkillTwoYes}
-        />
-        <label>Yes</label>
-        <input
-          type="radio"
-          name="skill-two"
-          id="skill-two-no"
-          value="No"
-          onChange={recordSkillTwoNo}
-        />
-        <label>No</label>
-        <h3>Hand-Stand Forward-Roll</h3>
-        <input
-          type="radio"
-          name="skill-three"
-          id="skill-three-yes"
-          value="Yes"
-          onChange={recordSkillThreeYes}
-        />
-        <label>Yes</label>
-        <input
-          type="radio"
-          name="skill-three"
-          id="skill-three-no"
-          value="No"
-          onChange={recordSkillThreeNo}
-        />
-        <label>No</label>
-        <h3>Round-Off</h3>
-        <input
-          type="radio"
-          name="skill-four"
-          id="skill-four-yes"
-          value="Yes"
-          onChange={recordSkillFourYes}
-        />
-        <label>Yes</label>
-        <input
-          type="radio"
-          name="skill-four"
-          id="skill-four-no"
-          value="No"
-          onChange={recordSkillFourNo}
-        />
-        <label>No</label>
-        <br />
-        <br />
+        {/* short circuit evaluation; is submitted true? if so run the code to the right of the && */}
+        {message.length > 0 ? <div>{message}</div> : null}
+        <h2>{level}</h2>
+        {level === "IGC" ? (
+          <div>
+            <h3>Front Walkover</h3>
+            <input
+              type="radio"
+              name="skill-one"
+              id="skill-one-yes"
+              value="Yes"
+              onChange={recordSkillOneYes}
+            />
+            <label>Yes</label>
+            <input
+              type="radio"
+              name="skill-one"
+              id="skill-one-no"
+              value="No"
+              onChange={recordSkillOneNo}
+            />
+            <label>No</label>
+            <h3>Back Walkover</h3>
+            <input
+              type="radio"
+              name="skill-two"
+              id="skill-two-yes"
+              value="Yes"
+              onChange={recordSkillTwoYes}
+            />
+            <label>Yes</label>
+            <input
+              type="radio"
+              name="skill-two"
+              id="skill-two-no"
+              value="No"
+              onChange={recordSkillTwoNo}
+            />
+            <label>No</label>
+            <h3>Hand-Stand Forward-Roll</h3>
+            <input
+              type="radio"
+              name="skill-three"
+              id="skill-three-yes"
+              value="Yes"
+              onChange={recordSkillThreeYes}
+            />
+            <label>Yes</label>
+            <input
+              type="radio"
+              name="skill-three"
+              id="skill-three-no"
+              value="No"
+              onChange={recordSkillThreeNo}
+            />
+            <label>No</label>
+            <h3>Round-Off</h3>
+            <input
+              type="radio"
+              name="skill-four"
+              id="skill-four-yes"
+              value="Yes"
+              onChange={recordSkillFourYes}
+            />
+            <label>Yes</label>
+            <input
+              type="radio"
+              name="skill-four"
+              id="skill-four-no"
+              value="No"
+              onChange={recordSkillFourNo}
+            />
+            <label>No</label>
+            <br />
+            <br />
+          </div>
+        ) : null}
+        {level === "Advanced" ? (
+          <div>
+            <h3>Front Walkover</h3>
+            <input
+              type="radio"
+              name="skill-one"
+              id="skill-one-yes"
+              value="Yes"
+              onChange={recordSkillOneYes}
+            />
+            <label>Yes</label>
+            <input
+              type="radio"
+              name="skill-one"
+              id="skill-one-no"
+              value="No"
+              onChange={recordSkillOneNo}
+            />
+            <label>No</label>
+            <h3>Back Walkover</h3>
+            <input
+              type="radio"
+              name="skill-two"
+              id="skill-two-yes"
+              value="Yes"
+              onChange={recordSkillTwoYes}
+            />
+            <label>Yes</label>
+            <input
+              type="radio"
+              name="skill-two"
+              id="skill-two-no"
+              value="No"
+              onChange={recordSkillTwoNo}
+            />
+            <label>No</label>
+            <h3>Hand-Stand Forward-Roll</h3>
+            <input
+              type="radio"
+              name="skill-three"
+              id="skill-three-yes"
+              value="Yes"
+              onChange={recordSkillThreeYes}
+            />
+            <label>Yes</label>
+            <input
+              type="radio"
+              name="skill-three"
+              id="skill-three-no"
+              value="No"
+              onChange={recordSkillThreeNo}
+            />
+            <label>No</label>
+            <h3>Round-Off</h3>
+            <input
+              type="radio"
+              name="skill-four"
+              id="skill-four-yes"
+              value="Yes"
+              onChange={recordSkillFourYes}
+            />
+            <label>Yes</label>
+            <input
+              type="radio"
+              name="skill-four"
+              id="skill-four-no"
+              value="No"
+              onChange={recordSkillFourNo}
+            />
+            <label>No</label>
+            <br />
+            <br />
+          </div>
+        ) : null}
+        {level === "Intermediate" ? (
+          <div>
+            <h3>Front Walkover</h3>
+            <input
+              type="radio"
+              name="skill-one"
+              id="skill-one-yes"
+              value="Yes"
+              onChange={recordSkillOneYes}
+            />
+            <label>Yes</label>
+            <input
+              type="radio"
+              name="skill-one"
+              id="skill-one-no"
+              value="No"
+              onChange={recordSkillOneNo}
+            />
+            <label>No</label>
+            <h3>Back Walkover</h3>
+            <input
+              type="radio"
+              name="skill-two"
+              id="skill-two-yes"
+              value="Yes"
+              onChange={recordSkillTwoYes}
+            />
+            <label>Yes</label>
+            <input
+              type="radio"
+              name="skill-two"
+              id="skill-two-no"
+              value="No"
+              onChange={recordSkillTwoNo}
+            />
+            <label>No</label>
+            <h3>Hand-Stand Forward-Roll</h3>
+            <input
+              type="radio"
+              name="skill-three"
+              id="skill-three-yes"
+              value="Yes"
+              onChange={recordSkillThreeYes}
+            />
+            <label>Yes</label>
+            <input
+              type="radio"
+              name="skill-three"
+              id="skill-three-no"
+              value="No"
+              onChange={recordSkillThreeNo}
+            />
+            <label>No</label>
+            <h3>Round-Off</h3>
+            <input
+              type="radio"
+              name="skill-four"
+              id="skill-four-yes"
+              value="Yes"
+              onChange={recordSkillFourYes}
+            />
+            <label>Yes</label>
+            <input
+              type="radio"
+              name="skill-four"
+              id="skill-four-no"
+              value="No"
+              onChange={recordSkillFourNo}
+            />
+            <label>No</label>
+            <br />
+            <br />
+          </div>
+        ) : null}
         <button type="submit">Evaluate</button>
       </form>
-      }
-      {igcLogic ? <div>Congratulations, athlete qualifies for the IGC team!</div> : igcLogicTwo && <div>Congratulations, athlete qualifies for Advanced; level classes!</div>}
     </div>
   );
 };
 
 export default RegistrationForm;
-
