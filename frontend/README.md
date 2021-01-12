@@ -17,3 +17,7 @@ filter method
 
 
 Homework - if we want to extract our different forms into their own files then we need to learn about props(props are how we share information from one component to another.)
+
+
+
+asynchronous programming - key topic in js. e.g. async await.

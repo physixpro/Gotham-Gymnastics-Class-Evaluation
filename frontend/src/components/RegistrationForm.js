@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import logo from "../images/logo.jpg";
+import "./RegistrationForm.css";
 
 // ** CTRL + p opens the filefinder
 const RegistrationForm = () => {
@@ -226,7 +227,7 @@ const RegistrationForm = () => {
       skillThreeYes === "Yes" &&
       skillFourYes === "Yes"
     ) {
-      setMessage(`User is registered and there level is ${level}`);
+      setMessage(`User is registered and their level is ${level}`);
       // If they are IGC, save this information in the database
       const newUser = {
         coachName: coachName,
@@ -250,7 +251,7 @@ const RegistrationForm = () => {
       setLevel("Intermediate");
     } else {
       setLevel("Beginner");
-      setMessage(`User is registered and there level is ${level}`);
+      setMessage(`User is registered and their level is ${level}`);
       const newUser = {
         coachName: coachName,
         athleteName: athleteName,
@@ -270,40 +271,70 @@ const RegistrationForm = () => {
       <img src={logo} alt="logo" width="100px" />
       <h1> Gotham Gymnastics</h1>
       <h2>Skill Assesment</h2>
-      <form onSubmit={registrationAndMessage}>
-        Coache's Name:
-        <input
-          type="text"
-          name="coach name"
-          placeholder="Enter Name"
-          onChange={recordCoachName}
-          value={coachName}
-        />
-        Date:
-        <input type="date" name="date" onChange={recordDate} value={date} />
-        Athlete Name:
-        <input
-          type="text"
-          name=" athlete name"
-          placeholder="Athlete Name"
-          onChange={recordAthleteName}
-          value={athleteName}
-        />
-        Parent/Guardian Name:
-        <input
-          type="text"
-          name=" parent name"
-          placeholder="Parent Name"
-          onChange={recordParentName}
-          value={parentName}
-        />
+
+      {message.length > 0 ? <div className="success-message">{message}</div> : null}
+      <form className="registration-form" onSubmit={registrationAndMessage}>
+        <section className="input-container">
+          <label className="form-label">
+            Coach's Name:
+            <input
+              required
+              className="form-input"
+              type="text"
+              name="coach name"
+              placeholder="Enter Name"
+              onChange={recordCoachName}
+              value={coachName}
+            />
+          </label>
+          <label className="form-label">
+            Date:
+            <input
+              required
+              className="form-input"
+              type="date"
+              name="date"
+              onChange={recordDate}
+              value={date}
+            />
+          </label>
+        </section>
+
+        <section className="input-container">
+          <label className="form-label">
+            Athlete Name:
+            <input
+              required
+              className="form-input"
+              type="text"
+              name=" athlete name"
+              placeholder="Athlete Name"
+              onChange={recordAthleteName}
+              value={athleteName}
+            />
+          </label>
+          <label className="form-label">
+            Parent/Guardian Name:
+            <input
+              required
+              className="form-input"
+              type="text"
+              name=" parent name"
+              placeholder="Parent Name"
+              onChange={recordParentName}
+              value={parentName}
+            />
+          </label>
+        </section>
+
         {/* short circuit evaluation; is submitted true? if so run the code to the right of the && */}
-        {message.length > 0 ? <div>{message}</div> : null}
-        <h2>{level}</h2>
+
+        <h2>{level}  Assesment</h2>
         {level === "IGC" ? (
           <div>
             <h3>Front Walkover</h3>
             <input
+              required
               type="radio"
               name="skill-one"
               id="skill-one-yes"
@@ -312,6 +343,7 @@ const RegistrationForm = () => {
             />
             <label>Yes</label>
             <input
+              required
               type="radio"
               name="skill-one"
               id="skill-one-no"
@@ -321,6 +353,7 @@ const RegistrationForm = () => {
             <label>No</label>
             <h3>Back Walkover</h3>
             <input
+              required
               type="radio"
               name="skill-two"
               id="skill-two-yes"
@@ -329,6 +362,7 @@ const RegistrationForm = () => {
             />
             <label>Yes</label>
             <input
+              required
               type="radio"
               name="skill-two"
               id="skill-two-no"
@@ -338,6 +372,7 @@ const RegistrationForm = () => {
             <label>No</label>
             <h3>Hand-Stand Forward-Roll</h3>
             <input
+              required
               type="radio"
               name="skill-three"
               id="skill-three-yes"
@@ -346,6 +381,7 @@ const RegistrationForm = () => {
             />
             <label>Yes</label>
             <input
+              required
               type="radio"
               name="skill-three"
               id="skill-three-no"
@@ -355,6 +391,7 @@ const RegistrationForm = () => {
             <label>No</label>
             <h3>Round-Off</h3>
             <input
+              required
               type="radio"
               name="skill-four"
               id="skill-four-yes"
@@ -363,6 +400,7 @@ const RegistrationForm = () => {
             />
             <label>Yes</label>
             <input
+              required
               type="radio"
               name="skill-four"
               id="skill-four-no"
@@ -378,6 +416,7 @@ const RegistrationForm = () => {
           <div>
             <h3>Front Walkover</h3>
             <input
+              required
               type="radio"
               name="skill-one"
               id="skill-one-yes"
@@ -386,6 +425,7 @@ const RegistrationForm = () => {
             />
             <label>Yes</label>
             <input
+              required
               type="radio"
               name="skill-one"
               id="skill-one-no"
@@ -395,6 +435,7 @@ const RegistrationForm = () => {
             <label>No</label>
             <h3>Back Walkover</h3>
             <input
+              required
               type="radio"
               name="skill-two"
               id="skill-two-yes"
@@ -403,6 +444,7 @@ const RegistrationForm = () => {
             />
             <label>Yes</label>
             <input
+              required
               type="radio"
               name="skill-two"
               id="skill-two-no"
@@ -412,6 +454,7 @@ const RegistrationForm = () => {
             <label>No</label>
             <h3>Hand-Stand Forward-Roll</h3>
             <input
+              required
               type="radio"
               name="skill-three"
               id="skill-three-yes"
@@ -420,6 +463,7 @@ const RegistrationForm = () => {
             />
             <label>Yes</label>
             <input
+              required
               type="radio"
               name="skill-three"
               id="skill-three-no"
@@ -429,6 +473,7 @@ const RegistrationForm = () => {
             <label>No</label>
             <h3>Round-Off</h3>
             <input
+              required
               type="radio"
               name="skill-four"
               id="skill-four-yes"
@@ -437,6 +482,7 @@ const RegistrationForm = () => {
             />
             <label>Yes</label>
             <input
+              required
               type="radio"
               name="skill-four"
               id="skill-four-no"
@@ -452,6 +498,7 @@ const RegistrationForm = () => {
           <div>
             <h3>Front Walkover</h3>
             <input
+              required
               type="radio"
               name="skill-one"
               id="skill-one-yes"
@@ -460,6 +507,7 @@ const RegistrationForm = () => {
             />
             <label>Yes</label>
             <input
+              required
               type="radio"
               name="skill-one"
               id="skill-one-no"
@@ -469,6 +517,7 @@ const RegistrationForm = () => {
             <label>No</label>
             <h3>Back Walkover</h3>
             <input
+              required
               type="radio"
               name="skill-two"
               id="skill-two-yes"
@@ -477,6 +526,7 @@ const RegistrationForm = () => {
             />
             <label>Yes</label>
             <input
+              required
               type="radio"
               name="skill-two"
               id="skill-two-no"
@@ -486,6 +536,7 @@ const RegistrationForm = () => {
             <label>No</label>
             <h3>Hand-Stand Forward-Roll</h3>
             <input
+              required
               type="radio"
               name="skill-three"
               id="skill-three-yes"
@@ -494,6 +545,7 @@ const RegistrationForm = () => {
             />
             <label>Yes</label>
             <input
+              required
               type="radio"
               name="skill-three"
               id="skill-three-no"
@@ -503,6 +555,7 @@ const RegistrationForm = () => {
             <label>No</label>
             <h3>Round-Off</h3>
             <input
+              required
               type="radio"
               name="skill-four"
               id="skill-four-yes"
@@ -511,6 +564,7 @@ const RegistrationForm = () => {
             />
             <label>Yes</label>
             <input
+              required
               type="radio"
               name="skill-four"
               id="skill-four-no"
@@ -522,7 +576,9 @@ const RegistrationForm = () => {
             <br />
           </div>
         ) : null}
-        <button type="submit">Evaluate</button>
+        <button className="form-button" type="submit">
+          Evaluate
+        </button>
       </form>
     </div>
   );
